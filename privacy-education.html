@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Privacy Education Modules - Monero</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; line-height: 1.6; max-width: 900px; margin: auto; }
+        h1, h2, h3 { color: #ff8c00; }
+        .back-btn { display: inline-block; background: #ff8c00; color: #000; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 30px; }
+        .back-btn:hover { background: #ffb04d; }
+        .module { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #333; }
+        .analogy { font-style: italic; color: #ccc; margin: 10px 0; padding-left: 15px; border-left: 3px solid #ff8c00; }
+        a { color: #ff8c00; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <a href="monero-dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <h1>Privacy Education Modules</h1>
+    <p>Short, easy explainers of Monero's core privacy technologies. No math needed — just the big ideas!</p>
+
+    <div class="module">
+        <h2>1. Ring Signatures – Hiding the Sender</h2>
+        <p>A ring signature mixes your real input with several fake "decoy" inputs from past transactions on the blockchain. To an outsider, it looks like any of the people in the "ring" could have sent the money — but only you know the truth.</p>
+        <div class="analogy">
+            Analogy: Imagine 11 people put their hands in a circle to sign a secret note. Everyone signs, but only one person actually wrote the message. No one can prove who the real writer is — everyone is equally suspicious.
+        </div>
+        <p>Result: The sender's identity is hidden among a group (current ring size: 16). This makes it impossible to trace where the money came from.</p>
+        <p>Deep dive: <a href="https://www.getmonero.org/resources/moneropedia/ringsignatures.html" target="_blank">Moneropedia: Ring Signatures</a></p>
+    </div>
+
+    <div class="module">
+        <h2>2. Stealth Addresses – Hiding the Receiver</h2>
+        <p>Every time someone sends you Monero, your wallet automatically creates a brand-new, one-time "stealth" address just for that payment. Your real public address never appears on the blockchain.</p>
+        <div class="analogy">
+            Analogy: You give someone your home address for deliveries, but every package arrives at a different, temporary PO box. The sender never sees your real home, and no one can link all deliveries to you.
+        </div>
+        <p>Result: Only you and the sender know the payment was for you. Outsiders can't link payments to your main address or track how much you receive.</p>
+        <p>Deep dive: <a href="https://www.getmonero.org/resources/moneropedia/stealthaddress.html" target="_blank">Moneropedia: Stealth Addresses</a></p>
+    </div>
+
+    <div class="module">
+        <h2>3. Ring Confidential Transactions (RingCT) – Hiding the Amount</h2>
+        <p>RingCT hides the exact amount of XMR sent in every transaction using advanced math (commitments + proofs). The network still verifies the math is correct without seeing the real numbers.</p>
+        <div class="analogy">
+            Analogy: You send a locked box with money inside. The lock proves the box contains the right amount (no cheating), but no one can see how much is actually in there.
+        </div>
+        <p>Result: Transaction amounts are completely hidden — no one can see how much money is moving, even if they know who sent/received it (which they usually don't thanks to the other two techs).</p>
+        <p>Deep dive: <a href="https://www.getmonero.org/resources/moneropedia/ringCT.html" target="_blank">Moneropedia: RingCT</a></p>
+    </div>
+
+    <p>All three work together by default — you don't have to do anything special. That's what makes Monero the strongest privacy coin: <strong>privacy is mandatory, not optional</strong>.</p>
+
+    <p>Want more? Check the full <a href="https://www.getmonero.org/resources/moneropedia/" target="_blank">Moneropedia</a> for every term explained simply.</p>
+</body>
+</html>

@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>XMR Dashboard • Safe. Secure. Untraceable.</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 20px; line-height: 1.5; }
+        .container { max-width: 1400px; margin: auto; background: #000; padding: 20px; }
+        h1 { color: #ff8c00; text-align: center; font-size: 4em; font-weight: bold; margin: 0 0 10px; letter-spacing: 2px; }
+        .subtitle { text-align: center; color: #ccc; font-size: 1.2em; margin: 0 0 30px; text-transform: lowercase; }
+        .header-buttons { text-align: center; margin-bottom: 40px; }
+        .header-btn { background: #000; color: #ff8c00; border: 2px solid #ff8c00; padding: 10px 20px; margin: 0 10px; border-radius: 25px; cursor: pointer; font-weight: bold; transition: background 0.3s; }
+        .header-btn:hover { background: #ff8c00; color: #000; }
+        .metrics { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px; margin-bottom: 40px; }
+        .metric-box { background: #111; padding: 18px; border-radius: 12px; text-align: center; border: 1px solid #333; position: relative; transition: all 0.3s; }
+        .metric-box:hover { border-color: #ff8c00; box-shadow: 0 0 10px rgba(255, 140, 0, 0.5); }
+        .metric-title { font-size: 0.9em; color: #aaa; text-transform: lowercase; margin-bottom: 10px; }
+        .metric-value { font-size: 1.9em; color: #ff8c00; font-weight: bold; }
+        .tooltip { visibility: hidden; opacity: 0; width: 220px; background: #222; color: #eee; text-align: center; border-radius: 8px; padding: 12px; position: absolute; z-index: 1; bottom: 120%; left: 50%; margin-left: -110px; border: 1px solid #ff8c00; transition: opacity 0.3s; font-size: 0.85em; }
+        .metric-box:hover .tooltip { visibility: visible; opacity: 1; }
+        .chart-section { margin-bottom: 40px; }
+        .controls { text-align: center; margin-bottom: 15px; }
+        button { background: #000; color: #ff8c00; border: 1px solid #ff8c00; padding: 8px 14px; margin: 4px; border-radius: 20px; cursor: pointer; font-weight: bold; font-size: 0.9em; }
+        button.active, button:hover { background: #ff8c00; color: #000; }
+        #xmrChart { background: #111; border-radius: 10px; max-height: 420px; }
+        .why-section { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #333; }
+        .why-section h2 { color: #ff8c00; margin-top: 0; font-size: 1.6em; }
+        .bullet-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px; }
+        .bullet-columns ul { list-style-type: disc; padding-left: 20px; margin: 0; }
+        .bullet-columns li { margin-bottom: 12px; }
+        .bullet-columns a { color: #ff8c00; text-decoration: none; font-weight: bold; }
+        .bullet-columns a:hover { text-decoration: underline; }
+        @media (max-width: 768px) { .bullet-columns { grid-template-columns: 1fr; gap: 20px; } }
+        .donation-section { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 30px; border: 1px solid #333; text-align: center; }
+        .donation-section h3 { color: #ff8c00; margin-top: 0; }
+        .donation-address { font-family: monospace; color: #ff8c00; word-break: break-all; background: #000; padding: 10px; border-radius: 8px; margin: 15px 0; }
+        .footer { text-align: center; color: #444; font-size: 0.8em; margin-top: 40px; }
+        #splash { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: #000; display: flex; align-items: center; justify-content: center; z-index: 9999; opacity: 1; transition: opacity 1s ease; }
+        #splash.hidden { opacity: 0; pointer-events: none; }
+        .splash-text { font-size: 3.5em; font-weight: bold; color: #ff8c00; text-align: center; animation: pulse 3s infinite; }
+        @keyframes pulse { 0%, 100% { opacity: 0.9; } 50% { opacity: 0.5; } }
+        @media (max-width: 768px) { .splash-text { font-size: 2.5em; } }
+    </style>
+</head>
+<body>
+    <!-- Splash screen -->
+    <div id="splash">
+        <div class="splash-text">real privacy</div>
+    </div>
+
+    <div class="container">
+        <h1>Monero</h1>
+        <p class="subtitle">safe. secure. untraceable.</p>
+
+        <div class="header-buttons">
+            <button class="header-btn" onclick="window.open('https://www.getmonero.org/downloads/', '_blank')">Get Wallet</button>
+            <button class="header-btn" onclick="window.open('https://www.getmonero.org/resources/about/', '_blank')">About</button>
+            <button class="header-btn" onclick="window.open('https://www.getmonero.org/downloads/', '_blank')">Download Node</button>
+        </div>
+
+        <div class="metrics">
+            <div class="metric-box">
+                <div class="metric-title">current price (cex)</div>
+                <div class="metric-value" id="price">Loading...</div>
+                <span class="tooltip" id="price-tooltip">24h change: Loading...</span>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">street price (p2p est.)</div>
+                <div class="metric-value" id="street-price">Loading...</div>
+                <span class="tooltip" id="street-tooltip">No-KYC premium over CEX: Loading...</span>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">24h volume</div>
+                <div class="metric-value" id="liquidity">Loading...</div>
+                <span class="tooltip" id="volume-tooltip">Across major exchanges</span>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">network txs (est.)</div>
+                <div class="metric-value" id="transactions">Loading...</div>
+                <span class="tooltip">Daily average (est.)</span>
+            </div>
+            <div class="metric-box">
+                <div class="metric-title">btc/xmr</div>
+                <div class="metric-value" id="btcxmr">Loading...</div>
+                <span class="tooltip">Current BTC/XMR exchange rate</span>
+            </div>
+        </div>
+
+        <div class="chart-section">
+            <div class="controls">
+                <button class="active" onclick="updateChart('1')">1h</button>
+                <button onclick="updateChart('1d')">1d</button>
+                <button onclick="updateChart('7')">1w</button>
+                <button onclick="updateChart('30')">1m</button>
+                <button onclick="updateChart('365')">1y</button>
+                <button onclick="updateChart('max')">all time</button>
+            </div>
+            <canvas id="xmrChart"></canvas>
+        </div>
+
+        <div class="why-section">
+            <h2>Why Monero?</h2>
+            <p>Monero offers true privacy in an increasingly surveilled world. Ring signatures, stealth addresses and confidential transactions keep your financial activity hidden. Ideal for those who value sovereignty over their money.</p>
+
+            <div class="bullet-columns">
+                <ul>
+                    <li><a href="get-started.html">Get started with Monero</a><br><span style="font-size:0.85em; color:#aaa;">Step-by-step guide to wallets, buying XMR privately, security basics & privacy tips for beginners</span></li>
+                    <li><a href="node-checker.html">Node Checker/Status Tool</a><br><span style="font-size:0.85em; color:#aaa;">Check public remote nodes, test connectivity, see network health & avoid unreliable ones</span></li>
+                    <li><a href="p2p-trading.html">P2P Trading Hub</a><br><span style="font-size:0.85em; color:#aaa;">No-KYC buying guides: Haveno, Bisq, atomic swaps & current local cash options</span></li>
+                    <li><a href="privacy-education.html">Privacy Education Modules</a><br><span style="font-size:0.85em; color:#aaa;">Simple explainers: how ring signatures, stealth addresses & view keys work</span></li>
+                </ul>
+
+                <ul>
+                    <li><a href="mining-calc.html">Mining Calculator</a><br><span style="font-size:0.85em; color:#aaa;">Estimate RandomX mining rewards, profitability & power costs for your CPU</span></li>
+                    <li><a href="ccs-tracker.html">CCS Tracker</a><br><span style="font-size:0.85em; color:#aaa;">See active Community Crowdfunding proposals & donate to Monero devs/tools</span></li>
+                    <li><a href="block-explorer.html">Block Explorer Embed</a><br><span style="font-size:0.85em; color:#aaa;">Quick search for transactions, blocks & addresses (privacy-respecting)</span></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="donation-section">
+            <h3>Support This Project</h3>
+            <p>Donations help keep this dashboard running and support Monero development.</p>
+            <div class="donation-address">47xnaGLNUifDP7J3VKTrmFcXLhTHb2JZm7rgFWYnnSdZPUkB1ZwVEuKA4kSn7MpanScLVbH8DUHe422SQgdPJ32X4qzNEQB</div>
+        </div>
+    </div>
+
+    <script>
+        // Hide splash after load or 3 seconds
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('splash').classList.add('hidden');
+            }, 3000);
+        });
+
+        let chart;
+        let currentDays = '1d';
+        let priceDataCache = {};
+
+        async function fetchXMRData(days = '1d') {
+            try {
+                const priceRes = await fetch('https://api.coingecko.com/api/v3/simple/price?ids=monero&vs_currencies=usd,btc&include_24hr_change=true');
+                const priceData = await priceRes.json();
+                const currentPrice = priceData.monero.usd.toFixed(2);
+                const change24h = priceData.monero.usd_24h_change.toFixed(1);
+                document.getElementById('price').textContent = `$${currentPrice}`;
+                document.getElementById('price-tooltip').textContent = `24h change: ${change24h >= 0 ? '+' : ''}${change24h}%`;
+
+                const btcRatio = priceData.monero.btc.toFixed(6);
+                document.getElementById('btcxmr').textContent = btcRatio;
+
+                const coinRes = await fetch('https://api.coingecko.com/api/v3/coins/monero');
+                const coinData = await coinRes.json();
+                const volume = coinData.market_data.total_volume.usd;
+                document.getElementById('liquidity').textContent = `$${(volume / 1e6).toFixed(0)}M`;
+
+                const premiumEst = 1.015;
+                const streetPrice = (currentPrice * premiumEst).toFixed(2);
+                document.getElementById('street-price').textContent = `$${streetPrice}`;
+                document.getElementById('street-tooltip').textContent = `No-KYC premium over CEX: +1.5%`;
+
+                document.getElementById('transactions').textContent = '~25,000';
+
+                if (!priceDataCache[days]) {
+                    const chartRes = await fetch(`https://api.coingecko.com/api/v3/coins/monero/market_chart?vs_currency=usd&days=${days}`);
+                    const chartData = await chartRes.json();
+                    priceDataCache[days] = chartData.prices;
+                }
+
+                renderChart(priceDataCache[days], days);
+
+                document.getElementById('splash').classList.add('hidden');
+            } catch (error) {
+                console.error('Fetch error:', error);
+                document.getElementById('splash').classList.add('hidden');
+            }
+        }
+
+        function renderChart(prices, days) {
+            const ctx = document.getElementById('xmrChart').getContext('2d');
+            if (chart) chart.destroy();
+
+            const labels = prices.map((p, i) => {
+                const date = new Date(p[0]);
+                if (days === 'max' || days === '365') {
+                    return date.toLocaleDateString('en-US', { month: 'short', year: 'numeric' });
+                }
+                return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+            });
+
+            const data = prices.map(p => p[1]);
+
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels,
+                    datasets: [{
+                        label: 'XMR Price (USD)',
+                        data,
+                        borderColor: '#ff8c00',
+                        backgroundColor: 'rgba(255, 140, 0, 0.25)',
+                        fill: true,
+                        tension: 0.3,
+                        pointRadius: 0,
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { ticks: { color: '#888', maxTicksLimit: 12, autoSkip: true, maxRotation: 0 }, grid: { color: '#222' } },
+                        y: { ticks: { color: '#888', callback: function(value) { return '$' + value.toLocaleString(); } }, grid: { color: '#222' } }
+                    },
+                    plugins: { legend: { display: false }, tooltip: { mode: 'index', intersect: false } },
+                    interaction: { mode: 'nearest', axis: 'x', intersect: false }
+                }
+            });
+        }
+
+        function updateChart(days) {
+            currentDays = days;
+            fetchXMRData(days);
+            document.querySelectorAll('button').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        fetchXMRData();
+    </script>
+</body>
+</html>

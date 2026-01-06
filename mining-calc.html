@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mining Calculator - Monero</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; line-height: 1.6; max-width: 900px; margin: auto; }
+        h1, h2 { color: #ff8c00; }
+        .back-btn { display: inline-block; background: #ff8c00; color: #000; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 30px; }
+        .back-btn:hover { background: #ffb04d; }
+        .calc-form { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; }
+        .calc-input { display: block; width: 100%; padding: 10px; margin: 10px 0; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; font-size: 1em; }
+        .calc-button { background: #ff8c00; color: #000; border: none; padding: 12px 20px; border-radius: 25px; font-weight: bold; cursor: pointer; margin: 10px 0; }
+        .calc-button:hover { background: #ffb04d; }
+        .results { background: #111; padding: 20px; border-radius: 12px; margin-top: 20px; border: 1px solid #333; }
+        .result-item { margin-bottom: 15px; font-size: 1.1em; }
+        .result-value { color: #ff8c00; font-weight: bold; }
+        .tip { background: #002200; padding: 15px; border-left: 5px solid #4caf50; border-radius: 6px; margin: 20px 0; }
+        a { color: #ff8c00; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <a href="monero-dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <h1>Mining Calculator</h1>
+    <p>Estimate your Monero mining profitability with RandomX (CPU-only, ASIC-resistant). Updated for January 2026 network stats (current block reward ~0.6 XMR, difficulty ~500G).</p>
+
+    <div class="calc-form">
+        <label><strong>Your Hashrate (H/s)</strong> <input type="number" id="hashrate" class="calc-input" placeholder="e.g. 5000" value="5000"></label>
+        <label><strong>Electricity Cost ($/kWh)</strong> <input type="number" id="powerCost" class="calc-input" placeholder="e.g. 0.12" value="0.12" step="0.01"></label>
+        <label><strong>Power Consumption (Watts)</strong> <input type="number" id="powerUsage" class="calc-input" placeholder="e.g. 100" value="100"></label>
+        <label><strong>XMR Price ($)</strong> <input type="number" id="xmrPrice" class="calc-input" placeholder="e.g. 440" value="440"></label>
+        <button onclick="calculate()" class="calc-button">Calculate Profitability</button>
+    </div>
+
+    <div id="results" class="results" style="display:none;">
+        <h2>Your Estimated Earnings</h2>
+        <div class="result-item"><strong>Daily XMR:</strong> <span id="dailyXMR" class="result-value"></span></div>
+        <div class="result-item"><strong>Daily Revenue ($):</strong> <span id="dailyRevenue" class="result-value"></span></div>
+        <div class="result-item"><strong>Daily Power Cost ($):</strong> <span id="dailyPowerCost" class="result-value"></span></div>
+        <div class="result-item"><strong>Daily Profit ($):</strong> <span id="dailyProfit" class="result-value"></span></div>
+        <div class="result-item"><strong>Monthly Profit ($):</strong> <span id="monthlyProfit" class="result-value"></span></div>
+        <div class="result-item"><strong>Break-even Time (days):</strong> <span id="breakEven" class="result-value"></span></div>
+    </div>
+
+    <div class="tip">
+        <strong>Quick Tips:</strong><br>
+        • Monero mining is CPU-only (RandomX) — great for laptops/desktops.<br>
+        • Use XMRig software (xmrig.com) — open-source, efficient.<br>
+        • Join a pool: supportxmr.com or nanopool.org (low fees).<br>
+        • For solo mining, use your own node (see Node Checker page).
+    </div>
+
+    <p>Disclaimer: Estimates based on current network (difficulty, reward). Actual results vary. Data from CoinGecko & Monero explorers.</p>
+
+    <script>
+        function calculate() {
+            const hashrate = parseFloat(document.getElementById('hashrate').value) || 0;
+            const powerCost = parseFloat(document.getElementById('powerCost').value) || 0;
+            const powerUsage = parseFloat(document.getElementById('powerUsage').value) || 0;
+            const xmrPrice = parseFloat(document.getElementById('xmrPrice').value) || 0;
+
+            // Current network stats (Jan 2026)
+            const networkHashrate = 3000000000000; // 3 TH/s
+            const blockReward = 0.6; // XMR per block
+            const blocksPerDay = 720; // 2 min blocks
+
+            const dailyXMR = (hashrate / networkHashrate) * blockReward * blocksPerDay;
+            const dailyRevenue = dailyXMR * xmrPrice;
+            const dailyPowerCost = (powerUsage / 1000) * 24 * powerCost;
+            const dailyProfit = dailyRevenue - dailyPowerCost;
+            const monthlyProfit = dailyProfit * 30;
+            const breakEven = dailyProfit > 0 ? (0 / dailyProfit) : 'N/A (loss-making)';
+
+            document.getElementById('dailyXMR').textContent = dailyXMR.toFixed(6);
+            document.getElementById('dailyRevenue').textContent = `$${dailyRevenue.toFixed(2)}`;
+            document.getElementById('dailyPowerCost').textContent = `$${dailyPowerCost.toFixed(2)}`;
+            document.getElementById('dailyProfit').textContent = `$${dailyProfit.toFixed(2)}`;
+            document.getElementById('monthlyProfit').textContent = `$${monthlyProfit.toFixed(2)}`;
+            document.getElementById('breakEven').textContent = breakEven;
+
+            document.getElementById('results').style.display = 'block';
+        }
+    </script>
+</body>
+</html>

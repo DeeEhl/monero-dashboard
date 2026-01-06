@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Block Explorer - Monero</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; line-height: 1.6; max-width: 900px; margin: auto; }
+        h1, h2 { color: #ff8c00; }
+        .back-btn { display: inline-block; background: #ff8c00; color: #000; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 30px; }
+        .back-btn:hover { background: #ffb04d; }
+        .search-box { background: #111; padding: 25px; border-radius: 12px; border: 1px solid #333; margin-bottom: 30px; }
+        .search-input { width: 100%; padding: 12px; font-size: 1.1em; background: #222; border: 1px solid #444; color: #fff; border-radius: 6px; margin-bottom: 15px; }
+        .search-button { background: #ff8c00; color: #000; border: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; cursor: pointer; }
+        .search-button:hover { background: #ffb04d; }
+        .explorer-list { background: #111; padding: 20px; border-radius: 12px; border: 1px solid #333; }
+        .explorer-item { margin-bottom: 20px; }
+        .tip { background: #002200; padding: 15px; border-left: 5px solid #4caf50; border-radius: 6px; margin: 20px 0; }
+        a { color: #ff8c00; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+    <a href="monero-dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <h1>Block Explorer</h1>
+    <p>Quickly look up Monero transactions, blocks, or addresses. All recommended explorers are privacy-respecting and work with Tor.</p>
+
+    <div class="search-box">
+        <h2>Search for TxID, Block Height, or Address</h2>
+        <input type="text" id="searchQuery" class="search-input" placeholder="Enter TxID, block height, or address (e.g. 123456 or 4A...)" />
+        <button onclick="search()" class="search-button">Search</button>
+    </div>
+
+    <div class="explorer-list">
+        <h2>Recommended Privacy-Focused Explorers</h2>
+        <div class="explorer-item">
+            <strong>XMRChain.net</strong><br>
+            Fast, no JavaScript, Tor onion available.<br>
+            <a href="https://xmrchain.net" target="_blank">xmrchain.net</a> | 
+            <a href="http://xmrchain.net.onion" target="_blank">Onion (Tor)</a>
+        </div>
+        <div class="explorer-item">
+            <strong>Explore.Monero.org</strong><br>
+            Official community explorer, clean interface.<br>
+            <a href="https://explore.monero.org" target="_blank">explore.monero.org</a>
+        </div>
+        <div class="explorer-item">
+            <strong>LocalMonero Explorer (legacy)</strong><br>
+            Still active, good for older txs.<br>
+            <a href="https://localmonero.co/explorer" target="_blank">localmonero.co/explorer</a>
+        </div>
+    </div>
+
+    <div class="tip">
+        <strong>Privacy Tips:</strong><br>
+        • Always use Tor Browser when exploring.<br>
+        • Never paste your full view key — it reveals your balance.<br>
+        • For private tx lookup, use your own wallet's history.<br>
+        • Explorers only show public data — your privacy stays intact.
+    </div>
+
+    <script>
+        function search() {
+            const query = document.getElementById('searchQuery').value.trim();
+            if (!query) {
+                alert('Please enter a TxID, block height, or address!');
+                return;
+            }
+
+            // Open in new tab to XMRChain (most reliable)
+            const url = `https://xmrchain.net/search?query=${encodeURIComponent(query)}`;
+            window.open(url, '_blank');
+        }
+    </script>
+</body>
+</html>

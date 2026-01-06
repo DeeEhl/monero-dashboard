@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node Checker / Status Tool - Monero</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; line-height: 1.6; max-width: 900px; margin: auto; }
+        h1, h2 { color: #ff8c00; }
+        .back-btn { display: inline-block; background: #ff8c00; color: #000; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 30px; }
+        .back-btn:hover { background: #ffb04d; }
+        ul { padding-left: 0; }
+        li { margin-bottom: 20px; background: #111; padding: 15px; border-radius: 8px; }
+        a { color: #ff8c00; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .tip { background: #002200; padding: 15px; border-left: 5px solid #4caf50; border-radius: 6px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <a href="monero-dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <h1>Node Checker / Status Tool</h1>
+    <p>Use public remote nodes to sync your wallet faster. For maximum privacy, run your own node later.</p>
+
+    <h2>Recommended Public Remote Nodes (January 2026)</h2>
+    <ul>
+        <li>
+            <strong>node.moneroworld.com:18089</strong><br>
+            High uptime, reliable, widely used.
+        </li>
+        <li>
+            <strong>node.xmr.be:18089</strong><br>
+            Community-run, good for Europe, supports Tor.
+        </li>
+        <li>
+            <strong>node.monerobux.com:18089</strong><br>
+            Fast sync, beginner-friendly.
+        </li>
+        <li>
+            <strong>node.moneroworld.com:28089</strong><br>
+            Onion routing (Tor-only) for extra privacy.
+        </li>
+    </ul>
+
+    <h2>How to Use / Test a Node in Your Wallet</h2>
+    <ol>
+        <li>Open your Monero GUI or Feather Wallet.</li>
+        <li>Go to **Settings** → **Node** (or Remote Node).</li>
+        <li>Select "Remote node" and enter one from above (e.g. node.moneroworld.com:18089).</li>
+        <li>Click "Connect" or save — watch the sync status in the bottom bar.</li>
+        <li>If it fails (red status), try another node from the list.</li>
+    </ol>
+
+    <div class="tip">
+        <strong>Privacy Tip:</strong> Remote nodes see your IP and wallet queries. For full privacy, run your own node (see "Download Node" button on dashboard). Use Tor/I2P for remote connections.
+    </div>
+
+    <p>Real-time node status & more options:  
+        <a href="https://monero.fail" target="_blank">monero.fail</a> |  
+        <a href="https://xmr.fail" target="_blank">xmr.fail</a>
+    </p>
+
+    <p>Questions? Ask in r/Monero or Monero Matrix rooms — the community is very helpful.</p>
+</body>
+</html>

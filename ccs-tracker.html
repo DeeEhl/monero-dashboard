@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CCS Tracker - Monero</title>
+    <style>
+        body { font-family: Arial, sans-serif; background: #000; color: #fff; margin: 0; padding: 40px; line-height: 1.6; max-width: 900px; margin: auto; }
+        h1, h2 { color: #ff8c00; }
+        .back-btn { display: inline-block; background: #ff8c00; color: #000; padding: 10px 20px; border-radius: 25px; text-decoration: none; font-weight: bold; margin-bottom: 30px; }
+        .back-btn:hover { background: #ffb04d; }
+        .proposal { background: #111; padding: 20px; border-radius: 12px; margin-bottom: 25px; border: 1px solid #333; }
+        .status { font-weight: bold; margin: 10px 0; }
+        .status.open { color: #4caf50; }
+        .status.funded { color: #ff8c00; }
+        .status.completed { color: #888; }
+        a { color: #ff8c00; text-decoration: none; }
+        a:hover { text-decoration: underline; }
+        .donate-box { background: #220022; padding: 15px; border-left: 5px solid #ff8c00; border-radius: 6px; margin: 20px 0; }
+    </style>
+</head>
+<body>
+    <a href="monero-dashboard.html" class="back-btn">← Back to Dashboard</a>
+
+    <h1>CCS Tracker</h1>
+    <p>The Monero Community Crowdfunding System (CCS) funds development, research, and tools. View active proposals, donate XMR, and support the network.</p>
+
+    <div class="donate-box">
+        <strong>Donate Directly</strong><br>
+        Send XMR to this address to support the dashboard & Monero:<br>
+        <div class="donation-address" style="margin: 10px 0; font-family: monospace; background: #000; padding: 10px; border-radius: 6px;">
+            47xnaGLNUifDP7J3VKTrmFcXLhTHb2JZm7rgFWYnnSdZPUkB1ZwVEuKA4kSn7MpanScLVbH8DUHe422SQgdPJ32X4qzNEQB
+        </div>
+        Every donation helps keep this site running and funds community projects!
+    </div>
+
+    <h2>Active & Recent CCS Proposals (as of January 2026)</h2>
+    <p>Proposals change frequently. Check the official site for the latest status.</p>
+
+    <div class="proposal">
+        <h3>FCMP++ (Full-Chain Membership Proofs++)</h3>
+        <p class="status open">Status: Open / Funding</p>
+        <p>Major privacy upgrade: larger ring sizes (16–128), better scalability. Beta stressnet Q1 2026.</p>
+        <a href="https://ccs.getmonero.org/proposals/fcmppp.html" target="_blank">View on CCS →</a>
+    </div>
+
+    <div class="proposal">
+        <h3>Monero Outreach & Education</h3>
+        <p class="status funded">Status: Funded</p>
+        <p>Community events, guides, and marketing to grow adoption.</p>
+        <a href="https://ccs.getmonero.org" target="_blank">View all proposals →</a>
+    </div>
+
+    <div class="proposal">
+        <h3>RandomX v2 & ASIC Resistance</h3>
+        <p class="status open">Status: Open</p>
+        <p>Improvements to mining algorithm for continued CPU fairness.</p>
+        <a href="https://ccs.getmonero.org" target="_blank">Check latest →</a>
+    </div>
+
+    <p><strong>Official CCS Site:</strong> <a href="https://ccs.getmonero.org" target="_blank">ccs.getmonero.org</a> — browse all proposals, funding status, and donate there too.</p>
+
+    <div class="tip">
+        <strong>How to Donate:</strong><br>
+        • Send XMR from your wallet to the proposal address (listed on CCS site).<br>
+        • Or send to the dashboard address above to support this tool.<br>
+        • Every amount helps — even 0.1 XMR makes a difference!
+    </div>
+
+    <p>Questions? Ask in r/Monero or Monero Matrix — the community loves helping donors.</p>
+</body>
+</html>
